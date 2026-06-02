@@ -1,0 +1,5 @@
+from app.services.compatibility.device_capabilities.capability_detection_service import CapabilityDetectionService
+from app.services.compatibility.device_capabilities.audio_capability_service import AudioCapabilityService
+from app.services.compatibility.device_capabilities.auto_answer_compatibility_service import AutoAnswerCompatibilityService
+
+__all__ = ["CapabilityDetectionService", "AudioCapabilityService", "AutoAnswerCompatibilityService"]
