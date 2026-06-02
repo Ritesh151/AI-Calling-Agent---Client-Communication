@@ -99,12 +99,13 @@ export function useWebSocket(enabled = true) {
       const handlers = handlersRef.current.get(message.type) || [];
       handlers.forEach((handler) => handler(message.data || message));
 
-      const { updateDevice, setDevices, setConnectedDevices } = deviceStoreRef.current;
+      const { updateDevice, setDevices, setConnectedDevices, setADBStatus } = deviceStoreRef.current;
       const { setStats } = systemStoreRef.current;
 
       switch (message.type) {
         case "device_connected":
           queryClient.invalidateQueries({ queryKey: ["devices"] });
+          queryClient.invalidateQueries({ queryKey: ["devices", "adb-status"] });
           break;
         case "device_disconnected":
           if (message.data?.device_id) {
@@ -135,6 +136,24 @@ export function useWebSocket(enabled = true) {
               is_connected: true,
             });
           }
+          break;
+        case "device_metrics_updated":
+          if (message.data?.device_id) {
+            updateDevice(message.data.device_id, {
+              battery_level: message.data.battery_level,
+              charging: message.data.charging,
+              screen_state: message.data.screen_state,
+            });
+          }
+          break;
+        case "device_updated":
+          if (message.data?.device_id) {
+            updateDevice(message.data.device_id, message.data);
+            queryClient.invalidateQueries({ queryKey: ["devices"] });
+          }
+          break;
+        case "adb_status_changed":
+          queryClient.invalidateQueries({ queryKey: ["devices", "adb-status"] });
           break;
         case "incoming_call":
         case "call_answered":

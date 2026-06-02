@@ -19,10 +19,16 @@ export interface Device {
   android_version: string | null;
   status: string;
   is_connected: boolean;
-  last_seen: string | null;
+  connection_type: string | null;
+  usb_debugging_enabled: boolean | null;
+  adb_status: string | null;
   battery_level: number | null;
   charging: boolean | null;
   screen_state: string | null;
+  device_ip: string | null;
+  last_seen: string | null;
+  heartbeat_at: string | null;
+  last_command_at: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -104,6 +110,22 @@ export interface SystemStats {
   server_time: string;
   python_version: string;
   platform: string;
+}
+
+export interface ADBStatus {
+  server_running: boolean;
+  server_status: string;
+  devices_found: number;
+  connected_devices: number;
+  is_healthy: boolean;
+  last_check: string;
+}
+
+export interface DeviceActionResult {
+  success: boolean;
+  message: string;
+  device_id?: number;
+  details?: Record<string, unknown>;
 }
 
 export interface ApiResponse<T> {

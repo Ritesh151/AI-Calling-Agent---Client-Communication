@@ -126,7 +126,7 @@ project-root/
 
 ```bash
 # Clone and enter project
-git clone <repository-url>
+git clone https://github.com/Ritesh151/AI-Calling-Agent---Client-Communication.git
 cd project-root
 
 # Start all services

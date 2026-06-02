@@ -1,9 +1,27 @@
 import apiClient from "./api";
-import type { ApiResponse, Device } from "@/types";
+import type { ApiResponse, ADBStatus, Device, DeviceActionResult } from "@/types";
+
+export interface DeviceListParams {
+  skip?: number;
+  limit?: number;
+  sync?: boolean;
+  adb_present_only?: boolean;
+  search?: string;
+  connected_only?: boolean;
+}
 
 export const devicesService = {
-  async getAll(): Promise<ApiResponse<Device[]>> {
-    const response = await apiClient.get<ApiResponse<Device[]>>("/devices");
+  async getAll(params?: DeviceListParams): Promise<ApiResponse<Device[]>> {
+    const queryParams: Record<string, string | number | boolean> = {};
+    if (params) {
+      if (params.skip !== undefined) queryParams.skip = params.skip;
+      if (params.limit !== undefined) queryParams.limit = params.limit;
+      if (params.sync !== undefined) queryParams.sync = params.sync;
+      if (params.adb_present_only !== undefined) queryParams.adb_present_only = params.adb_present_only;
+      if (params.search) queryParams.search = params.search;
+      if (params.connected_only !== undefined) queryParams.connected_only = params.connected_only;
+    }
+    const response = await apiClient.get<ApiResponse<Device[]>>("/devices", { params: queryParams });
     return response.data;
   },
 
@@ -44,6 +62,26 @@ export const devicesService = {
 
   async sync(): Promise<ApiResponse<Record<string, number>>> {
     const response = await apiClient.post<ApiResponse<Record<string, number>>>("/devices/sync");
+    return response.data;
+  },
+
+  async getADBStatus(): Promise<ApiResponse<ADBStatus>> {
+    const response = await apiClient.get<ApiResponse<ADBStatus>>("/devices/adb-status");
+    return response.data;
+  },
+
+  async refreshDevice(id: number): Promise<ApiResponse<Device>> {
+    const response = await apiClient.post<ApiResponse<Device>>(`/devices/${id}/refresh`);
+    return response.data;
+  },
+
+  async reconnectDevice(id: number): Promise<ApiResponse<DeviceActionResult>> {
+    const response = await apiClient.post<ApiResponse<DeviceActionResult>>(`/devices/${id}/reconnect`);
+    return response.data;
+  },
+
+  async runDiagnostics(id: number): Promise<ApiResponse<DeviceActionResult>> {
+    const response = await apiClient.post<ApiResponse<DeviceActionResult>>(`/devices/${id}/diagnostics`);
     return response.data;
   },
 };
