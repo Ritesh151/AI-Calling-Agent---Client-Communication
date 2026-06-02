@@ -41,7 +41,8 @@ export function useAuth() {
   const loginMutation = useMutation({
     mutationFn: (data: LoginRequest) => authService.login(data),
     onSuccess: async (response) => {
-      const userFromLogin: User | null = response?.data?.user ?? null;
+      const loginData = response?.data as unknown as Record<string, unknown> | undefined;
+      const userFromLogin: User | null = (loginData?.user as User) ?? null;
       if (userFromLogin) {
         setUser(userFromLogin);
         queryClient.setQueryData(["auth", "me"], userFromLogin);

@@ -6,6 +6,8 @@ from datetime import UTC, datetime
 from typing import Any
 
 from app.core.config import settings
+from app.core.database import SessionLocal
+from app.repositories.device_repository import DeviceRepository
 from app.services.adb_watcher import ADBEngine, adb_engine
 from app.services.event_bus import EventBus, event_bus
 from app.services.event_bus.event_types import (
@@ -78,6 +80,17 @@ class ADBWatcherService:
 
             await asyncio.sleep(settings.DEVICE_WATCH_INTERVAL_SECONDS)
 
+    def _get_device_id_from_db(self, serial: str) -> int | None:
+        db = SessionLocal()
+        try:
+            repo = DeviceRepository(db)
+            device = repo.get_by_serial(serial)
+            return device.id if device else None
+        except Exception:
+            return None
+        finally:
+            db.close()
+
     async def _handle_device_connected(self, serial: str, devices: list) -> None:
         device_info = None
         for d in devices:
@@ -85,30 +98,36 @@ class ADBWatcherService:
                 device_info = d
                 break
 
+        device_id = self._get_device_id_from_db(serial) or abs(hash(serial))
+
         event = DeviceConnectedEvent(
-            device_id=hash(serial),
+            device_id=device_id,
             serial=serial,
             manufacturer=device_info.manufacturer if device_info else "",
             model=device_info.model if device_info else "",
             data={
                 "serial": serial,
+                "device_id": device_id,
                 "connected_at": datetime.now(UTC).isoformat(),
             },
         )
         await self.event_bus.publish(event)
-        logger.info("Device connected: %s", serial)
+        logger.info("Device connected: %s (id=%s)", serial, device_id)
 
     async def _handle_device_disconnected(self, serial: str) -> None:
+        device_id = self._get_device_id_from_db(serial) or abs(hash(serial))
+
         event = DeviceDisconnectedEvent(
-            device_id=hash(serial),
+            device_id=device_id,
             serial=serial,
             data={
                 "serial": serial,
+                "device_id": device_id,
                 "disconnected_at": datetime.now(UTC).isoformat(),
             },
         )
         await self.event_bus.publish(event)
-        logger.info("Device disconnected: %s", serial)
+        logger.info("Device disconnected: %s (id=%s)", serial, device_id)
 
     def _update_adb_status(self, status: str, error: str | None = None) -> None:
         if self._last_adb_status != status:

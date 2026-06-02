@@ -125,6 +125,7 @@ export interface DeviceActionResult {
   success: boolean;
   message: string;
   device_id?: number;
+  is_online?: boolean;
   details?: Record<string, unknown>;
 }
 
