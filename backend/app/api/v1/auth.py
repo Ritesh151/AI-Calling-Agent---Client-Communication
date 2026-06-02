@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, Request, Response
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_user_id
+from app.core.config import settings
 from app.core.database import get_db
 from app.schemas.auth import LoginRequest, RefreshRequest, RegisterRequest, TokenResponse
 from app.schemas.common import SuccessResponse
@@ -11,6 +12,16 @@ from app.schemas.user import UserRead
 from app.services.auth_service import AuthService
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
+
+
+def _cookie_kwargs(max_age: int) -> dict:
+    return {
+        "httponly": True,
+        "secure": settings.ENVIRONMENT.lower() in ("production", "prod", "staging"),
+        "samesite": "lax",
+        "max_age": max_age,
+        "path": "/",
+    }
 
 
 @router.post("/register", response_model=SuccessResponse[UserRead])
@@ -29,24 +40,8 @@ def login(
     service = AuthService(db)
     access_token, refresh_token = service.login(request)
 
-    response.set_cookie(
-        key="access_token",
-        value=access_token,
-        httponly=True,
-        secure=True,
-        samesite="lax",
-        max_age=1800,
-        path="/",
-    )
-    response.set_cookie(
-        key="refresh_token",
-        value=refresh_token,
-        httponly=True,
-        secure=True,
-        samesite="lax",
-        max_age=604800,
-        path="/",
-    )
+    response.set_cookie(key="access_token", value=access_token, **_cookie_kwargs(1800))
+    response.set_cookie(key="refresh_token", value=refresh_token, **_cookie_kwargs(604800))
 
     return SuccessResponse(
         message="Login successful",
@@ -71,24 +66,8 @@ def refresh_token(
     access_token, new_refresh = service.refresh_token(token)
 
     if response:
-        response.set_cookie(
-            key="access_token",
-            value=access_token,
-            httponly=True,
-            secure=True,
-            samesite="lax",
-            max_age=1800,
-            path="/",
-        )
-        response.set_cookie(
-            key="refresh_token",
-            value=new_refresh,
-            httponly=True,
-            secure=True,
-            samesite="lax",
-            max_age=604800,
-            path="/",
-        )
+        response.set_cookie(key="access_token", value=access_token, **_cookie_kwargs(1800))
+        response.set_cookie(key="refresh_token", value=new_refresh, **_cookie_kwargs(604800))
 
     return SuccessResponse(
         message="Token refreshed",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
@@ -14,28 +14,22 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   const { isAuthenticated, isLoading } = useAuthStore();
   const { checkAuth } = useAuth();
   const [authReady, setAuthReady] = useState(false);
+  const authCheckStartedRef = useRef(false);
 
   useWebSocket(authReady && isAuthenticated);
 
   useEffect(() => {
-    const token =
-      localStorage.getItem("access_token") ||
-      (document.cookie.includes("access_token") ? "cookie" : null);
-    if (token) {
-      checkAuth()
-        .then((result) => {
-          if (!result.data) {
-            router.replace("/auth/login");
-          }
-        })
-        .catch(() => router.replace("/auth/login"))
-        .finally(() => setAuthReady(true));
-    } else {
+    if (authCheckStartedRef.current) return;
+    authCheckStartedRef.current = true;
+
+    const token = localStorage.getItem("access_token");
+    if (!token) {
       useAuthStore.getState().setIsLoading(false);
       setAuthReady(true);
-      router.replace("/auth/login");
+      return;
     }
-  }, [checkAuth, router]);
+    checkAuth().finally(() => setAuthReady(true));
+  }, [checkAuth]);
 
   useEffect(() => {
     if (authReady && !isLoading && !isAuthenticated) {
@@ -43,7 +37,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     }
   }, [authReady, isLoading, isAuthenticated, router]);
 
-  if (!authReady || (isLoading && !isAuthenticated)) {
+  if (!authReady) {
     return (
       <div className="flex h-screen items-center justify-center">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />

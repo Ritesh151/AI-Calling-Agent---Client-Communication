@@ -8,8 +8,13 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 30000,
-      retry: 2,
       refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      retry: (failureCount, error: unknown) => {
+        const status = (error as { response?: { status?: number } })?.response?.status;
+        if (status === 429 || status === 503) return false;
+        return failureCount < 1;
+      },
     },
   },
 });

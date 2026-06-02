@@ -21,7 +21,8 @@ export function useDevices() {
         setIsLoading(false);
       }
     },
-    refetchInterval: 5000,
+    refetchInterval: 15000,
+    refetchIntervalInBackground: false,
   });
 
   const connectedQuery = useQuery({
@@ -31,7 +32,8 @@ export function useDevices() {
       setConnectedDevices(response.data);
       return response.data;
     },
-    refetchInterval: 5000,
+    refetchInterval: 30000,
+    refetchIntervalInBackground: false,
   });
 
   const discoverMutation = useMutation({

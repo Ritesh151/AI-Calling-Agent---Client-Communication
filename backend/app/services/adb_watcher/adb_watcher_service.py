@@ -74,6 +74,7 @@ class ADBWatcherService:
             except Exception as e:
                 logger.error("ADB watcher error: %s", e)
                 self._update_adb_status("error", str(e))
+                await asyncio.sleep(5)
 
             await asyncio.sleep(settings.DEVICE_WATCH_INTERVAL_SECONDS)
 

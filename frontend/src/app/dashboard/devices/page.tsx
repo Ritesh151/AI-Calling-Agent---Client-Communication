@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -34,10 +34,6 @@ export default function DevicesPage() {
   const { devices, connectedDevices, isLoading, refetch, discover, isDiscovering } = useDevices();
   const [search, setSearch] = useState("");
   const [showOnlyConnected, setShowOnlyConnected] = useState(false);
-
-  useEffect(() => {
-    refetch();
-  }, []);
 
   // Filter devices based on connection status and search
   const displayDevices = showOnlyConnected ? connectedDevices : devices;

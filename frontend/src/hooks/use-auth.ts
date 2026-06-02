@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { authService } from "@/services/auth.service";
 import { useAuthStore } from "@/stores/auth-store";
-import type { LoginRequest, RegisterRequest } from "@/types";
+import type { LoginRequest, RegisterRequest, User } from "@/types";
 
 export function useAuth() {
   const router = useRouter();
@@ -17,25 +17,47 @@ export function useAuth() {
       setIsLoading(true);
       try {
         const response = await authService.getMe();
-        setUser(response.data);
-        return response.data;
-      } catch {
-        setUser(null);
-        return null;
+        const next = response?.data ?? null;
+        setUser(next);
+        return next;
+      } catch (error) {
+        const status = (error as { response?: { status?: number } })?.response?.status;
+        if (status === 401) {
+          setUser(null);
+        }
+        throw error;
       } finally {
         setIsLoading(false);
       }
     },
-    retry: false,
+    retry: (failureCount, error: unknown) => {
+      const status = (error as { response?: { status?: number } })?.response?.status;
+      if (status === 401 || status === 403) return false;
+      return failureCount < 1;
+    },
     enabled: false,
   });
 
   const loginMutation = useMutation({
     mutationFn: (data: LoginRequest) => authService.login(data),
-    onSuccess: async () => {
-      const me = await authService.getMe();
-      setUser(me.data);
-      queryClient.invalidateQueries({ queryKey: ["auth"] });
+    onSuccess: async (response) => {
+      const userFromLogin: User | null = response?.data?.user ?? null;
+      if (userFromLogin) {
+        setUser(userFromLogin);
+        queryClient.setQueryData(["auth", "me"], userFromLogin);
+      } else {
+        try {
+          const me = await authService.getMe();
+          const next = me?.data ?? null;
+          setUser(next);
+          queryClient.setQueryData(["auth", "me"], next);
+        } catch (error) {
+          const status = (error as { response?: { status?: number } })?.response?.status;
+          if (status !== 401) {
+            console.warn("Post-login /auth/me failed; dashboard will retry.", error);
+          }
+        }
+      }
       router.push("/dashboard");
     },
   });
@@ -48,10 +70,13 @@ export function useAuth() {
   });
 
   const logout = async () => {
-    await authService.logout();
-    storeLogout();
-    queryClient.clear();
-    router.push("/auth/login");
+    try {
+      await authService.logout();
+    } finally {
+      storeLogout();
+      queryClient.clear();
+      router.push("/auth/login");
+    }
   };
 
   return {

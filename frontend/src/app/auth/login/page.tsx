@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -25,9 +24,13 @@ const loginSchema = z.object({
 
 type LoginForm = z.infer<typeof loginSchema>;
 
+function getErrorMessage(err: unknown): string {
+  const e = err as { response?: { data?: { message?: string } }; message?: string };
+  return e?.response?.data?.message || e?.message || "Login failed. Please try again.";
+}
+
 export default function LoginPage() {
   const { login, isLoginLoading, loginError } = useAuth();
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const {
     register,
@@ -38,15 +41,10 @@ export default function LoginPage() {
   });
 
   const onSubmit = (data: LoginForm) => {
-    setErrorMessage(null);
-    login(data, {
-      onError: (err: any) => {
-        setErrorMessage(
-          err?.response?.data?.message || "Login failed. Please try again.",
-        );
-      },
-    });
+    login(data);
   };
+
+  const errorMessage = loginError ? getErrorMessage(loginError) : null;
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4">

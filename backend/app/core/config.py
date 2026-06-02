@@ -83,7 +83,7 @@ class Settings(BaseSettings):
     BCRYPT_ROUNDS: int = 12
 
     RATE_LIMIT_ENABLED: bool = True
-    RATE_LIMIT_REQUESTS_PER_MINUTE: int = 60
+    RATE_LIMIT_REQUESTS_PER_MINUTE: int = 300
 
     LOG_LEVEL: str = "INFO"
     LOG_FORMAT: str = "json"

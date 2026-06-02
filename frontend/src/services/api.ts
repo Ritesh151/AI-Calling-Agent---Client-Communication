@@ -14,8 +14,21 @@ const apiClient: AxiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: true,
+  withCredentials: false,
 });
+
+const AUTH_PATHS = [
+  "/auth/login",
+  "/auth/register",
+  "/auth/refresh",
+  "/auth/logout",
+  "/auth/me",
+];
+
+function isAuthPath(url?: string): boolean {
+  if (!url) return false;
+  return AUTH_PATHS.some((p) => url.includes(p));
+}
 
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
@@ -54,7 +67,14 @@ apiClient.interceptors.response.use(
       _retry?: boolean;
     };
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    const requestUrl = originalRequest?.url ?? "";
+    const status = error.response?.status;
+
+    if (
+      status === 401 &&
+      !originalRequest._retry &&
+      !isAuthPath(requestUrl)
+    ) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
@@ -96,12 +116,22 @@ apiClient.interceptors.response.use(
         processQueue(refreshError, null);
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
-        if (typeof window !== "undefined") {
+        if (
+          typeof window !== "undefined" &&
+          !window.location.pathname.startsWith("/auth/login")
+        ) {
           window.location.href = "/auth/login";
         }
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
+      }
+    }
+
+    if (error.response) {
+      const serverMessage = error.response.data?.message;
+      if (serverMessage) {
+        (error as AxiosError & { message: string }).message = serverMessage;
       }
     }
 

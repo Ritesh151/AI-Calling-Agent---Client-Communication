@@ -19,7 +19,7 @@ function logWsDiagnostics(
   phase: string,
   details: Record<string, unknown>,
 ): void {
-  console.error(`[WebSocket] ${phase}`, details);
+  console.warn(`[WebSocket] ${phase}`, details);
 }
 
 export function useWebSocket(enabled = true) {
@@ -174,6 +174,7 @@ export function useWebSocket(enabled = true) {
       return;
     }
 
+    // Prevent duplicate connections
     if (
       wsRef.current?.readyState === WebSocket.OPEN ||
       wsRef.current?.readyState === WebSocket.CONNECTING
@@ -297,8 +298,6 @@ export function useWebSocket(enabled = true) {
       }
       setConnectionStatus("DISCONNECTED");
     };
-    // Single mount/unmount — connect identity must NOT retrigger cleanup storms
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enabled]);
 
   const reconnect = useCallback(() => {

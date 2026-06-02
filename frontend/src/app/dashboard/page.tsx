@@ -13,12 +13,11 @@ import { formatDate } from "@/lib/utils";
 export default function DashboardPage() {
   const { devices } = useDeviceStore();
   const { stats, setStats } = useSystemStore();
-  const { refetch } = useDevices();
+  useDevices();
 
   useEffect(() => {
-    refetch();
     systemService.getStats().then((r) => setStats(r.data)).catch(() => {});
-  }, [refetch, setStats]);
+  }, [setStats]);
 
   const connectedCount = useMemo(
     () => devices.filter((d) => d.is_connected).length,
