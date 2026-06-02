@@ -9,7 +9,6 @@ from app.services.call_archive.archive_service import ArchiveService
 
 logger = logging.getLogger(__name__)
 
-
 class RecordingCleanupWorker:
     def __init__(self) -> None:
         self._running = False

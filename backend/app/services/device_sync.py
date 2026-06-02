@@ -105,10 +105,31 @@ class DeviceSyncService:
                 )
                 device_id = created.id
                 result.connected += 1
+                try:
+                    full_info = await self.adb.get_device_info(serial)
+                    new_name = f"{full_info.manufacturer or 'Android'} {full_info.model or ''}".strip()
+                    if not new_name or new_name == "Android":
+                        new_name = f"Android Device ({serial[:8]}...)"
+                    repo.update(
+                        created.id,
+                        manufacturer=full_info.manufacturer or None,
+                        model=full_info.model or None,
+                        android_version=full_info.android_version or None,
+                        battery_level=full_info.battery_level if full_info.battery_level >= 0 else None,
+                        charging=full_info.charging,
+                        screen_state=full_info.screen_state if full_info.screen_state != "unknown" else None,
+                        device_ip=full_info.device_ip or None,
+                        device_name=new_name,
+                    )
+                except Exception:
+                    logger.debug("Could not fetch full info for %s during sync", serial)
                 await self._emit_connected(serial, adb_dev, device_id)
             else:
+                new_name = f"{adb_dev.manufacturer or 'Android'} {adb_dev.model or ''}".strip()
+                if not new_name or new_name == "Android":
+                    new_name = f"Android Device ({serial[:8]}...)"
                 created = repo.create(
-                    device_name=f"Android Device ({serial[:8]}...)",
+                    device_name=new_name,
                     serial_number=serial,
                     manufacturer=adb_dev.manufacturer,
                     model=adb_dev.model,

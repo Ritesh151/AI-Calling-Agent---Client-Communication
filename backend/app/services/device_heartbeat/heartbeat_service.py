@@ -94,20 +94,32 @@ class DeviceHeartbeatService:
             repo = DeviceRepository(db)
             device = repo.get_by_serial(serial)
             if device:
+                new_name = device.device_name
+                if info.manufacturer or info.model:
+                    candidate = f"{info.manufacturer or 'Android'} {info.model or ''}".strip()
+                    if candidate and candidate != "Android":
+                        new_name = candidate
                 repo.update(
                     device.id,
                     is_connected=True,
                     status="connected",
                     last_seen=now,
                     heartbeat_at=now,
+                    manufacturer=info.manufacturer or device.manufacturer,
+                    model=info.model or device.model,
+                    android_version=info.android_version or device.android_version,
+                    device_name=new_name,
                     battery_level=info.battery_level if info.battery_level >= 0 else device.battery_level,
-                    charging=info.charging if device.charging is not None else device.charging,
+                    charging=info.charging if info.charging is not None else device.charging,
                     screen_state=info.screen_state if info.screen_state != "unknown" else device.screen_state,
                     device_ip=info.device_ip or device.device_ip,
                 )
             else:
+                new_name = f"{info.manufacturer or 'Android'} {info.model or ''}".strip()
+                if not new_name or new_name == "Android":
+                    new_name = f"Android Device ({serial[:8]}...)"
                 device = repo.create(
-                    device_name=f"Android Device ({serial[:8]}...)",
+                    device_name=new_name,
                     serial_number=serial,
                     manufacturer=info.manufacturer,
                     model=info.model,

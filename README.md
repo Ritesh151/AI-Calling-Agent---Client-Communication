@@ -1,203 +1,371 @@
-# AI Calling System - Developed by `Ritesh Gajjar`
+````md
+<div align="center">
 
-A production-grade AI-powered call reception system that manages incoming calls on USB-connected Android devices, records messages, generates transcripts, and provides a web dashboard for management.
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=260&color=0:00F7FF,100:7C3AED&text=AI%20Calling%20System&fontSize=55&fontColor=ffffff&fontAlignY=40&desc=Production%20Grade%20AI%20Call%20Automation%20Platform&descAlignY=62"/>
 
-## Architecture
+<img src="https://readme-typing-svg.herokuapp.com?font=Orbitron&weight=700&size=30&duration=2500&pause=1000&color=00F7FF&center=true&vCenter=true&width=900&lines=AI+Powered+Call+Reception+Platform;Android+Automation+System;Realtime+Transcript+Generation;FastAPI+%2B+Next.js+Architecture;Built+For+Production"/>
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                   Frontend (Next.js 15)                   │
-│              TypeScript · Tailwind · Shadcn UI             │
-│              React Query · Zustand · Axios                │
-└──────────────────────┬──────────────────────────────────┘
-                       │ HTTP/HTTPS
-┌──────────────────────▼──────────────────────────────────┐
-│                   Backend (FastAPI)                       │
-│              Python 3.12 · SQLAlchemy 2.0 · Pydantic v2   │
-│              JWT Auth · Rate Limiting · CORS              │
-├──────────────────────┬───────────────────────────────────┤
-│      API v1          │         Services                   │
-│  ┌──────────────┐    │  ┌──────────────────────────┐      │
-│  │  auth        │    │  │  AuthService             │      │
-│  │  users       │    │  │  DeviceService           │      │
-│  │  devices     │    │  │  ADBManager              │      │
-│  │  calls       │    │  │  DeviceDiscoveryService  │      │
-│  │  settings    │    │  │  DeviceRegistryService   │      │
-│  │  logs        │    │  │  DeviceStatusService     │      │
-│  │  system      │    │  │  CallSessionService      │      │
-│  └──────────────┘    │  │  SettingService          │      │
-│                      │  │  LogService              │      │
-│                      │  └──────────────────────────┘      │
-├──────────────────────┴───────────────────────────────────┤
-│              Database (PostgreSQL)                        │
-│              Cache (Redis)                                │
-└──────────────────────────────────────────────────────────┘
-```
+<br>
 
-## Tech Stack
+<!-- DARK MODE BADGES -->
+
+<p>
+
+<img src="https://img.shields.io/github/stars/Ritesh151/AI-Calling-Agent---Client-Communication?style=for-the-badge&logo=github&logoColor=white"/>
+
+<img src="https://img.shields.io/github/forks/Ritesh151/AI-Calling-Agent---Client-Communication?style=for-the-badge"/>
+
+<img src="https://img.shields.io/github/license/Ritesh151/AI-Calling-Agent---Client-Communication?style=for-the-badge"/>
+
+<img src="https://komarev.com/ghpvc/?username=Ritesh151&style=for-the-badge&color=blueviolet"/>
+
+</p>
+
+</div>
+
+---
+
+# ⚡ AI Calling System
+
+<table>
+<tr>
+<td>
+
+### 🚀 What is this?
+
+Production-grade AI-powered calling platform that handles:
+
+- Incoming calls automatically  
+- Android device management  
+- Message recording  
+- AI transcript generation  
+- Real-time monitoring  
+- Multi-device scaling  
+
+</td>
+
+<td>
+
+<img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjJ3NmVqNm1pNmR3YzF4emM1dHk0N3U5dDZ0eDZ6OWkwNnY4emV2YyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/l3vR85PnGsBwu1PFK/giphy.gif" width="300"/>
+
+</td>
+</tr>
+</table>
+
+---
+
+# 🌌 Platform Features
+
+<table>
+
+<tr>
+
+<td width="33%" align="center">
+
+## 🤖 AI Engine
+
+AI call workflows  
+Transcript generation  
+Voice processing  
+
+</td>
+
+<td width="33%" align="center">
+
+## 📱 Android Layer
+
+ADB Management  
+USB Device Detection  
+Registry System  
+
+</td>
+
+<td width="33%" align="center">
+
+## 🔐 Security
+
+JWT Auth  
+Rate Limiting  
+Encrypted Storage  
+
+</td>
+
+</tr>
+
+</table>
+
+---
+
+# 🧠 System Architecture
+
+<div align="center">
+
+```mermaid
+graph TD
+
+A[Incoming Call]
+
+--> B[Android Device Layer]
+
+B --> C[ADB Manager]
+
+C --> D[FastAPI Backend]
+
+D --> E[Call Session Engine]
+
+E --> F[AI Processing]
+
+F --> G[Transcript Engine]
+
+G --> H[PostgreSQL]
+
+D --> I[Redis Cache]
+
+D --> J[Next.js Dashboard]
+
+````
+
+</div>
+
+---
+
+# 🛠 Tech Stack
+
+<table>
+
+<tr>
+
+<td>
 
 ### Frontend
-- **Next.js 15+** - React framework with App Router
-- **TypeScript** - Type-safe JavaScript
-- **Tailwind CSS** - Utility-first CSS framework
-- **Shadcn UI** - Reusable component library
-- **React Query** - Server state management
-- **Zustand** - Client state management
-- **Axios** - HTTP client with interceptors
-- **React Hook Form** - Form management
-- **Zod** - Schema validation
+
+* Next.js 15
+* TypeScript
+* Tailwind
+* Zustand
+* React Query
+* Axios
+* Shadcn UI
+
+</td>
+
+<td>
 
 ### Backend
-- **Python 3.12+** - Modern Python
-- **FastAPI** - High-performance async framework
-- **SQLAlchemy 2.0** - ORM with async support
-- **Alembic** - Database migrations
-- **Pydantic v2** - Data validation
-- **PostgreSQL** - Primary database
-- **Redis** - Caching and rate limiting
+
+* FastAPI
+* Python 3.12
+* SQLAlchemy 2
+* PostgreSQL
+* Redis
+* Alembic
+* Pydantic
+
+</td>
+
+<td>
 
 ### DevOps
-- **Docker** & **Docker Compose** - Containerization
-- **Ruff** / **Black** - Python linting and formatting
-- **MyPy** - Static type checking
-- **Pre-commit** - Git hooks
-- **pytest** - Backend testing
-- **Vitest** - Frontend testing
 
-## Project Structure
+* Docker
+* Docker Compose
+* Ruff
+* Black
+* MyPy
+* pytest
+* Vitest
 
-```
+</td>
+
+</tr>
+
+</table>
+
+---
+
+# 📊 Repository Analytics
+
+<div align="center">
+
+<img height="180em" src="https://github-readme-stats.vercel.app/api?username=Ritesh151&show_icons=true&theme=tokyonight"/>
+
+<img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Ritesh151&layout=compact&theme=tokyonight"/>
+
+</div>
+
+---
+
+# 🔥 Contribution Activity
+
+<div align="center">
+
+<img width="100%" src="https://github-readme-activity-graph.vercel.app/graph?username=Ritesh151&theme=tokyo-night"/>
+
+</div>
+
+---
+
+# 🐍 Contribution Snake
+
+<div align="center">
+
+<img src="https://raw.githubusercontent.com/Ritesh151/Ritesh151/output/github-contribution-grid-snake-dark.svg"/>
+
+</div>
+
+---
+
+# 📂 Project Structure
+
+```text
 project-root/
-├── frontend/                 # Next.js application
-│   ├── src/
-│   │   ├── app/              # App Router pages
-│   │   │   ├── auth/         # Login & Register
-│   │   │   ├── dashboard/    # Dashboard widgets
-│   │   │   ├── devices/      # Device management
-│   │   │   ├── calls/        # Call sessions
-│   │   │   ├── settings/     # System settings
-│   │   │   └── profile/      # User profile
-│   │   ├── components/       # Reusable components
-│   │   │   ├── ui/           # Base UI components
-│   │   │   ├── layout/       # Layout components
-│   │   │   ├── devices/      # Device components
-│   │   │   ├── calls/        # Call components
-│   │   │   ├── settings/     # Settings components
-│   │   │   └── dashboard/    # Dashboard components
-│   │   ├── hooks/            # Custom React hooks
-│   │   ├── services/         # API client services
-│   │   ├── stores/           # Zustand stores
-│   │   ├── types/            # TypeScript types
-│   │   └── lib/              # Utility functions
-│   └── public/
-├── backend/                  # FastAPI application
+
+├── frontend/
 │   ├── app/
-│   │   ├── api/v1/           # API routes
-│   │   │   ├── auth/         # Authentication endpoints
-│   │   │   ├── users/        # User management
-│   │   │   ├── devices/      # Device management
-│   │   │   ├── calls/        # Call sessions
-│   │   │   ├── settings/     # System settings
-│   │   │   ├── logs/         # System logs
-│   │   │   └── system/       # System endpoints
-│   │   ├── core/             # Core configuration
-│   │   ├── db/models/        # SQLAlchemy models
-│   │   ├── schemas/          # Pydantic schemas
-│   │   ├── services/         # Business logic
-│   │   ├── repositories/     # Data access layer
-│   │   ├── middlewares/      # FastAPI middlewares
-│   │   └── utils/            # Utility functions
-│   ├── tests/                # pytest tests
-│   └── alembic/              # Database migrations
-├── docker/                   # Docker configurations
-├── docs/                     # Documentation
-└── scripts/                  # Utility scripts
+│   ├── components/
+│   ├── hooks/
+│   ├── services/
+│   └── stores/
+
+├── backend/
+│   ├── api/
+│   ├── services/
+│   ├── repositories/
+│   ├── schemas/
+│   └── middlewares/
+
+├── docs/
+
+├── docker/
+
+└── scripts/
 ```
 
-## Quick Start
+---
 
-### Prerequisites
-- Docker & Docker Compose
-- Python 3.12+ (for local development)
-- Node.js 20+ (for local development)
-- Android Debug Bridge (ADB)
+# ⚙ Quick Start
 
-### Development with Docker
+## Clone Repository
 
 ```bash
-# Clone and enter project
 git clone https://github.com/Ritesh151/AI-Calling-Agent---Client-Communication.git
-cd project-root
 
-# Start all services
-docker compose up -d
-
-# Services will be available at:
-# Frontend: http://localhost:3000
-# Backend API: http://localhost:8000
-# API Docs: http://localhost:8000/docs
-# pgAdmin: http://localhost:5050
+cd AI-Calling-Agent---Client-Communication
 ```
 
-### Local Development
+---
 
-#### Backend
+## Docker Setup
+
+```bash
+docker compose up -d
+```
+
+---
+
+## Backend
+
 ```bash
 cd backend
 
-# Create virtual environment
 python -m venv venv
-source venv/bin/activate
 
-# Install dependencies
 pip install -r requirements.txt
 
-# Run database migrations
 alembic upgrade head
 
-# Start development server
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+uvicorn app.main:app --reload
 ```
 
-#### Frontend
+---
+
+## Frontend
+
 ```bash
 cd frontend
 
-# Install dependencies
 npm install
 
-# Start development server
 npm run dev
 ```
 
-## API Documentation
+---
 
-Interactive API documentation is available at `/docs` (Swagger UI) and `/redoc` (ReDoc) when the backend is running.
+# 🔐 Security Layer
 
-### Authentication
-All protected endpoints require a valid JWT access token in the `Authorization: Bearer <token>` header or as an httpOnly cookie.
+<table>
 
-## Database Schema
+<tr>
 
-### Tables
-- **users** - User accounts and authentication
-- **devices** - Connected Android device registry
-- **call_sessions** - Incoming call records
-- **system_logs** - Application logs
-- **settings** - System configuration key-value store
+<td>JWT Tokens</td>
 
-## Security
+<td>Password Hashing</td>
 
-- JWT access + refresh token rotation
-- bcrypt password hashing (12 rounds)
-- httpOnly secure cookies
-- CORS with allowed origin whitelist
-- Rate limiting per client IP
-- Input validation via Pydantic/Zod
-- SQL injection protection via ORM
-- XSS protection via output encoding
-- Environment-based secrets management
+<td>Rate Limiting</td>
 
-## License
+</tr>
 
-MIT
+<tr>
+
+<td>CORS Security</td>
+
+<td>Input Validation</td>
+
+<td>ORM Protection</td>
+
+</tr>
+
+</table>
+
+---
+
+# 🌍 Deployment Flow
+
+```text
+Developer
+
+↓
+
+GitHub Push
+
+↓
+
+CI/CD Pipeline
+
+↓
+
+Docker Build
+
+↓
+
+Backend Deploy
+
+↓
+
+Frontend Deploy
+
+↓
+
+Production Monitoring
+```
+
+---
+
+# 📜 License
+
+MIT License
+
+---
+
+<div align="center">
+
+## Developed By
+
+# 🚀 Ritesh Gajjar
+
+AI Systems • Automation • Production Infrastructure
+
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=140&section=footer&color=0:00F7FF,100:7C3AED"/>
+
+</div>
+```
