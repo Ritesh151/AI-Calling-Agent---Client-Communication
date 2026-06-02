@@ -1,77 +1,110 @@
-# ⚡ AI Calling System
-
-<table>
-<tr>
-<td>
-
-### 🚀 What is this?
-
-Production-grade AI-powered calling platform that handles:
-
-- Incoming calls automatically  
-- Android device management  
-- Message recording  
-- AI transcript generation  
-- Real-time monitoring  
-- Multi-device scaling  
-
-</td>
-
-<td>
-
-<img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjJ3NmVqNm1pNmR3YzF4emM1dHk0N3U5dDZ0eDZ6OWkwNnY4emV2YyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/l3vR85PnGsBwu1PFK/giphy.gif" width="300"/>
-
-</td>
-</tr>
-</table>
-
----
-
-# 🌌 Platform Features
-
-<table>
-
-<tr>
-
-<td width="33%" align="center">
-
-## 🤖 AI Engine
-
-AI call workflows  
-Transcript generation  
-Voice processing  
-
-</td>
-
-<td width="33%" align="center">
-
-## 📱 Android Layer
-
-ADB Management  
-USB Device Detection  
-Registry System  
-
-</td>
-
-<td width="33%" align="center">
-
-## 🔐 Security
-
-JWT Auth  
-Rate Limiting  
-Encrypted Storage  
-
-</td>
-
-</tr>
-
-</table>
-
----
-
-# 🧠 System Architecture
+# 🚀 AI Calling System
 
 <div align="center">
+
+![Banner](https://capsule-render.vercel.app/api?type=waving\&height=260\&text=AI%20Calling%20System\&fontSize=55\&fontAlignY=40\&color=0:0EA5E9,50:7C3AED,100\:EC4899)
+
+### Enterprise-Grade AI Voice Communication Platform
+
+AI-Powered Calling • Android Device Orchestration • Real-Time Monitoring • Multi-Device Scaling • Production Infrastructure
+
+![Python](https://img.shields.io/badge/Python-3.12-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-Latest-green)
+![NextJS](https://img.shields.io/badge/Next.js-15-black)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue)
+![Redis](https://img.shields.io/badge/Redis-Latest-red)
+![Docker](https://img.shields.io/badge/Docker-Production-blue)
+![License](https://img.shields.io/badge/License-MIT-success)
+
+</div>
+
+---
+
+# 🌟 Overview
+
+AI Calling System is a production-ready intelligent voice communication platform designed to automate inbound and outbound call workflows using advanced AI technologies.
+
+The platform combines:
+
+* 🤖 AI-Powered Voice Processing
+* 📞 Automated Call Handling
+* 📱 Android Device Management
+* 🎙 Real-Time Speech Processing
+* 📝 Intelligent Transcript Generation
+* 📊 Live Monitoring Dashboard
+* 🔄 Multi-Device Scalability
+* 🐳 Containerized Deployment
+
+Built for organizations that require reliable, scalable, and intelligent call automation infrastructure.
+
+---
+
+# 🎯 Core Capabilities
+
+## 🤖 AI Intelligence Layer
+
+* Real-Time Call Analysis
+* AI Conversation Engine
+* Smart Response Generation
+* Context-Aware Conversations
+* Intent Detection
+* Call Summarization
+* Transcript Generation
+* Conversation History
+
+---
+
+## 📞 Call Management
+
+* Incoming Call Processing
+* Outgoing Call Automation
+* Call Session Tracking
+* Call Recording Support
+* Call Routing Engine
+* Live Call Monitoring
+* Multi-Session Support
+
+---
+
+## 📱 Android Device Layer
+
+* ADB Integration
+* Device Registry Management
+* USB Device Detection
+* Device Health Monitoring
+* Device Assignment Engine
+* Auto Reconnection
+* Multi-Device Management
+
+---
+
+## 📊 Analytics & Monitoring
+
+* Real-Time Dashboard
+* Active Session Tracking
+* Call Analytics
+* Device Monitoring
+* System Health Metrics
+* Performance Insights
+* Usage Statistics
+
+---
+
+## 🔐 Enterprise Security
+
+* JWT Authentication
+* Refresh Token System
+* Password Hashing
+* Role-Based Access Control
+* API Security
+* Rate Limiting
+* Input Validation
+* CORS Protection
+* Audit Logging
+
+---
+
+# 🏗 System Architecture
 
 ```mermaid
 graph TD
@@ -80,83 +113,303 @@ A[Incoming Call]
 
 --> B[Android Device Layer]
 
-B --> C[ADB Manager]
+B --> C[ADB Device Manager]
 
 C --> D[FastAPI Backend]
 
 D --> E[Call Session Engine]
 
-E --> F[AI Processing]
+E --> F[Speech Processing]
 
-F --> G[Transcript Engine]
+F --> G[AI Engine]
 
-G --> H[PostgreSQL]
+G --> H[Transcript Generator]
 
-D --> I[Redis Cache]
+H --> I[PostgreSQL]
 
-D --> J[Next.js Dashboard]
+D --> J[Redis Cache]
 
-````
+D --> K[WebSocket Gateway]
 
-</div>
+K --> L[Next.js Dashboard]
 
----
+L --> M[Real-Time Monitoring]
 
-# 🛠 Tech Stack
+D --> N[Analytics Engine]
 
-<table>
-
-<tr>
-
-<td>
-
-### Frontend
-
-* Next.js 15
-* TypeScript
-* Tailwind
-* Zustand
-* React Query
-* Axios
-* Shadcn UI
-
-</td>
-
-<td>
-
-### Backend
-
-* FastAPI
-* Python 3.12
-* SQLAlchemy 2
-* PostgreSQL
-* Redis
-* Alembic
-* Pydantic
-
-</td>
-
-<td>
-
-### DevOps
-
-* Docker
-* Docker Compose
-* Ruff
-* Black
-* MyPy
-* pytest
-* Vitest
-
-</td>
-
-</tr>
-
-</table>
+N --> O[Reports & Insights]
+```
 
 ---
 
-# 📊 Repository Analytics
+# ⚙ Technology Stack
+
+## Frontend
+
+```text
+Next.js 15
+TypeScript
+Tailwind CSS
+ShadCN UI
+React Query
+Zustand
+Axios
+Socket.IO Client
+```
+
+---
+
+## Backend
+
+```text
+FastAPI
+Python 3.12
+SQLAlchemy 2.0
+Alembic
+Pydantic
+PostgreSQL
+Redis
+WebSockets
+```
+
+---
+
+## AI Services
+
+```text
+OpenAI
+Ollama
+Whisper STT
+Edge TTS
+Conversation Memory
+Prompt Orchestration
+Transcript Processing
+```
+
+---
+
+## DevOps & Infrastructure
+
+```text
+Docker
+Docker Compose
+NGINX
+GitHub Actions
+CI/CD Pipelines
+Monitoring Stack
+Linux Deployment
+```
+
+---
+
+# 📂 Project Structure
+
+```text
+AI-Calling-System/
+
+├── frontend/
+│
+│   ├── app/
+│   ├── components/
+│   ├── hooks/
+│   ├── services/
+│   ├── stores/
+│   ├── lib/
+│   └── utils/
+│
+├── backend/
+│
+│   ├── api/
+│   ├── core/
+│   ├── models/
+│   ├── schemas/
+│   ├── repositories/
+│   ├── services/
+│   ├── middlewares/
+│   ├── websocket/
+│   └── database/
+│
+├── ai-services/
+│
+│   ├── stt/
+│   ├── tts/
+│   ├── llm/
+│   ├── memory/
+│   └── transcripts/
+│
+├── docker/
+│
+├── scripts/
+│
+├── docs/
+│
+└── deployment/
+```
+
+---
+
+# 🚀 Quick Start
+
+## Clone Repository
+
+```bash
+git clone https://github.com/Ritesh151/AI-Calling-Agent---Client-Communication.git
+
+cd AI-Calling-Agent---Client-Communication
+```
+
+---
+
+# 🐳 Docker Deployment
+
+## Start Entire Platform
+
+```bash
+docker compose up -d --build
+```
+
+---
+
+## Check Containers
+
+```bash
+docker ps
+```
+
+---
+
+## View Logs
+
+```bash
+docker compose logs -f
+```
+
+---
+
+# 🔧 Backend Setup
+
+```bash
+cd backend
+
+python -m venv venv
+
+source venv/bin/activate
+```
+
+Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+Database Migration
+
+```bash
+alembic upgrade head
+```
+
+Run Server
+
+```bash
+uvicorn app.main:app --reload
+```
+
+---
+
+# 🎨 Frontend Setup
+
+```bash
+cd frontend
+
+npm install
+
+npm run dev
+```
+
+---
+
+# 🗄 Database Stack
+
+## PostgreSQL
+
+Stores:
+
+* Users
+* Call Sessions
+* Transcripts
+* Analytics
+* Devices
+* Audit Logs
+
+---
+
+## Redis
+
+Used For:
+
+* Session Management
+* Queue Processing
+* Cache Layer
+* Real-Time Events
+* Background Jobs
+
+---
+
+# 📡 API Features
+
+```text
+Authentication APIs
+Call Management APIs
+Device APIs
+Analytics APIs
+Transcript APIs
+Monitoring APIs
+Admin APIs
+```
+
+---
+
+# 🔄 Application Workflow
+
+```text
+Incoming Call
+
+↓
+
+Android Device
+
+↓
+
+ADB Detection
+
+↓
+
+Backend Processing
+
+↓
+
+AI Analysis
+
+↓
+
+Transcript Generation
+
+↓
+
+Database Storage
+
+↓
+
+Live Dashboard Update
+
+↓
+
+Analytics Processing
+```
+
+---
+
+# 📈 Repository Analytics
 
 <div align="center">
 
@@ -188,139 +441,19 @@ D --> J[Next.js Dashboard]
 
 ---
 
-# 📂 Project Structure
+# 🚀 Production Readiness
 
-```text
-project-root/
+### Supported Features
 
-├── frontend/
-│   ├── app/
-│   ├── components/
-│   ├── hooks/
-│   ├── services/
-│   └── stores/
-
-├── backend/
-│   ├── api/
-│   ├── services/
-│   ├── repositories/
-│   ├── schemas/
-│   └── middlewares/
-
-├── docs/
-
-├── docker/
-
-└── scripts/
-```
-
----
-
-# ⚙ Quick Start
-
-## Clone Repository
-
-```bash
-git clone https://github.com/Ritesh151/AI-Calling-Agent---Client-Communication.git
-
-cd AI-Calling-Agent---Client-Communication
-```
-
----
-
-## Docker Setup
-
-```bash
-docker compose up -d
-```
-
----
-
-## Backend
-
-```bash
-cd backend
-
-python -m venv venv
-
-pip install -r requirements.txt
-
-alembic upgrade head
-
-uvicorn app.main:app --reload
-```
-
----
-
-## Frontend
-
-```bash
-cd frontend
-
-npm install
-
-npm run dev
-```
-
----
-
-# 🔐 Security Layer
-
-<table>
-
-<tr>
-
-<td>JWT Tokens</td>
-
-<td>Password Hashing</td>
-
-<td>Rate Limiting</td>
-
-</tr>
-
-<tr>
-
-<td>CORS Security</td>
-
-<td>Input Validation</td>
-
-<td>ORM Protection</td>
-
-</tr>
-
-</table>
-
----
-
-# 🌍 Deployment Flow
-
-```text
-Developer
-
-↓
-
-GitHub Push
-
-↓
-
-CI/CD Pipeline
-
-↓
-
-Docker Build
-
-↓
-
-Backend Deploy
-
-↓
-
-Frontend Deploy
-
-↓
-
-Production Monitoring
-```
+* Dockerized Deployment
+* CI/CD Compatible
+* Horizontal Scaling
+* Health Checks
+* Monitoring Support
+* Database Migration System
+* Real-Time Communication
+* Secure Authentication
+* Enterprise Architecture
 
 ---
 
@@ -330,15 +463,16 @@ MIT License
 
 ---
 
+# 👨‍💻 Developed By
+
+## Ritesh Gajjar
+
+Senior Software Developer
+
+AI Systems • Automation • Voice Infrastructure • Scalable Backend Architecture
+
 <div align="center">
 
-## Developed By
-
-# 🚀 Ritesh Gajjar
-
-AI Systems • Automation • Production Infrastructure
-
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=140&section=footer&color=0:00F7FF,100:7C3AED"/>
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=140&section=footer&color=0:0EA5E9,50:7C3AED,100:EC4899"/>
 
 </div>
-```
