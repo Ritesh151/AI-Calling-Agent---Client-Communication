@@ -13,6 +13,7 @@ from app.api.v1.adb_commands import router as adb_commands_router
 from app.api.v1.recordings import router as recordings_router
 from app.api.v1.transcripts import router as transcripts_router
 from app.api.v1.greetings import router as greetings_router
+from app.api.v1.greeting import router as greeting_router
 from app.api.v1.archive import router as archive_router
 from app.api.v1.audio_jobs_routes import router as audio_jobs_router
 from app.api.v1.summaries_routes import router as summaries_router
@@ -25,6 +26,7 @@ from app.api.v1.insights import router as insights_router
 from app.api.v1.knowledge import router as knowledge_router
 from app.api.v1.projects import router as projects_router
 from app.api.v1.conversations import router as conversations_router
+from app.api.v1.call_export import router as call_export_router
 
 api_router = APIRouter(prefix="/api/v1")
 
@@ -41,6 +43,7 @@ api_router.include_router(adb_commands_router)
 api_router.include_router(recordings_router)
 api_router.include_router(transcripts_router)
 api_router.include_router(greetings_router)
+api_router.include_router(greeting_router)
 api_router.include_router(archive_router)
 api_router.include_router(audio_jobs_router)
 api_router.include_router(summaries_router)
@@ -53,5 +56,6 @@ api_router.include_router(insights_router)
 api_router.include_router(knowledge_router)
 api_router.include_router(projects_router)
 api_router.include_router(conversations_router)
+api_router.include_router(call_export_router)
 
 __all__ = ["api_router"]

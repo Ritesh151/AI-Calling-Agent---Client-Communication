@@ -104,8 +104,11 @@ export function useWebSocket(enabled = true) {
 
       switch (message.type) {
         case "device_connected":
-          queryClient.invalidateQueries({ queryKey: ["devices"] });
-          queryClient.invalidateQueries({ queryKey: ["devices", "adb-status"] });
+          // Use queryKey-specific invalidation to avoid duplicate refetches
+          queryClient.invalidateQueries({ 
+            queryKey: ["devices"],
+            exact: true,
+          });
           break;
         case "device_disconnected":
           if (message.data?.device_id) {
@@ -113,13 +116,17 @@ export function useWebSocket(enabled = true) {
               is_connected: false,
               status: "disconnected",
             });
-            queryClient.invalidateQueries({ queryKey: ["devices"] });
-            queryClient.invalidateQueries({ queryKey: ["devices", "connected"] });
+            queryClient.invalidateQueries({ 
+              queryKey: ["devices"],
+              exact: true,
+            });
           }
           break;
         case "devices_synced":
-          queryClient.invalidateQueries({ queryKey: ["devices"] });
-          queryClient.invalidateQueries({ queryKey: ["devices", "connected"] });
+          queryClient.invalidateQueries({ 
+            queryKey: ["devices"],
+            exact: true,
+          });
           if (message.data?.connected_count === 0) {
             setDevices([]);
             setConnectedDevices([]);
@@ -149,11 +156,17 @@ export function useWebSocket(enabled = true) {
         case "device_updated":
           if (message.data?.device_id) {
             updateDevice(message.data.device_id, message.data);
-            queryClient.invalidateQueries({ queryKey: ["devices"] });
+            queryClient.invalidateQueries({ 
+              queryKey: ["devices"],
+              exact: true,
+            });
           }
           break;
         case "adb_status_changed":
-          queryClient.invalidateQueries({ queryKey: ["devices", "adb-status"] });
+          queryClient.invalidateQueries({ 
+            queryKey: ["devices", "adb-status"],
+            exact: true,
+          });
           break;
         case "incoming_call":
         case "call_answered":
@@ -161,16 +174,28 @@ export function useWebSocket(enabled = true) {
         case "call_started":
         case "ai_answer_started":
         case "ai_answer_completed":
-          queryClient.invalidateQueries({ queryKey: ["calls"] });
+          queryClient.invalidateQueries({ 
+            queryKey: ["calls"],
+            exact: true,
+          });
           break;
         case "recording_stopped":
-          queryClient.invalidateQueries({ queryKey: ["recordings"] });
+          queryClient.invalidateQueries({ 
+            queryKey: ["recordings"],
+            exact: true,
+          });
           break;
         case "transcription_complete":
-          queryClient.invalidateQueries({ queryKey: ["transcripts"] });
+          queryClient.invalidateQueries({ 
+            queryKey: ["transcripts"],
+            exact: true,
+          });
           break;
         case "settings_updated":
-          queryClient.invalidateQueries({ queryKey: ["settings"] });
+          queryClient.invalidateQueries({ 
+            queryKey: ["settings"],
+            exact: true,
+          });
           break;
         case "system_stats":
           if (message.data) setStats(message.data);

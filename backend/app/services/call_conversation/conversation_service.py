@@ -13,7 +13,6 @@ from app.db.models.conversation import Conversation, ConversationMessage
 from app.services.project_planning import ProjectPlanningService
 from app.schemas.conversation import ConversationRead
 from app.services.call_conversation.question_engine import (
-    LANGUAGE_SELECTION_GREETING,
     SERVICE_SELECTION_QUESTION,
     base_questions,
     normalize_language,
@@ -24,6 +23,7 @@ from app.services.call_conversation.question_engine import (
 )
 from app.services.event_bus import Event, EventPriority, event_bus
 from app.services.mongo_storage import mongo_storage
+from app.services.greeting_engine import GreetingEngine, GreetingPhase
 
 logger = logging.getLogger(__name__)
 

@@ -9,12 +9,17 @@ export function useDevices() {
   const queryClient = useQueryClient();
   const { setDevices, setConnectedDevices, setIsLoading, setADBStatus } = useDeviceStore();
 
+  // Initial fetch with sync, then periodic refetch without sync
   const devicesQuery = useQuery({
     queryKey: ["devices"],
     queryFn: async () => {
       setIsLoading(true);
       try {
-        const response = await devicesService.getAll({ sync: true, adb_present_only: false });
+        // Only sync on first load, not on every refetch (sync=false)
+        const response = await devicesService.getAll({ 
+          sync: false, 
+          adb_present_only: false 
+        });
         setDevices(response.data);
         setConnectedDevices(response.data.filter((d) => d.is_connected));
         return response.data;
@@ -22,10 +27,13 @@ export function useDevices() {
         setIsLoading(false);
       }
     },
-    refetchInterval: 15000,
+    staleTime: 5000,  // Data fresh for 5 seconds
+    cacheTime: 10000,  // Keep in cache for 10 seconds
+    refetchInterval: 30000,  // Refetch every 30s (not 15s)
     refetchIntervalInBackground: false,
   });
 
+  // Separate endpoint for ADB status - less frequent
   const adbStatusQuery = useQuery({
     queryKey: ["devices", "adb-status"],
     queryFn: async () => {
@@ -33,7 +41,9 @@ export function useDevices() {
       setADBStatus(response.data);
       return response.data;
     },
-    refetchInterval: 10000,
+    staleTime: 10000,  // Data fresh for 10 seconds
+    cacheTime: 20000,  // Keep in cache for 20 seconds
+    refetchInterval: 20000,  // Refetch every 20s (not 10s)
     refetchIntervalInBackground: false,
   });
 

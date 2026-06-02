@@ -269,8 +269,8 @@ export default function LiveCallsPage() {
             <CardContent className="space-y-3">
               <div className="flex items-center justify-between text-sm">
                 <span>
-                  {snapshot?.question_progress.current ?? 0} /{" "}
-                  {snapshot?.question_progress.total ?? 0}
+                  {snapshot?.question_progress?.current ?? 0} /{" "}
+                  {snapshot?.question_progress?.total ?? 0}
                 </span>
                 <span>{snapshot?.completion_percentage ?? 0}%</span>
               </div>

@@ -46,9 +46,9 @@ def test_user(db_session: Session) -> User:
 @pytest.fixture(scope="function")
 def admin_user(db_session: Session) -> User:
     user = User(
-        email="admin@example.com",
+        email="rg_admin@gmail.com",
         username="adminuser",
-        password_hash=hash_password("AdminPass123!"),
+        password_hash=hash_password("rg_admin123"),
         role="admin",
         is_active=True,
     )

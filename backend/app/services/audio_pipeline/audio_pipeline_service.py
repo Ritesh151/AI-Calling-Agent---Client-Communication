@@ -3,16 +3,26 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
-from pydub import AudioSegment
-
 from app.core.config import settings
 
 logger = logging.getLogger(__name__)
+
+# Try to import pydub, but make it optional for Python 3.13+ compatibility
+try:
+    from pydub import AudioSegment
+    PYDUB_AVAILABLE = True
+except ImportError:
+    logger.warning("pydub not available - audio conversion features disabled")
+    PYDUB_AVAILABLE = False
 
 
 class AudioPipelineService:
     @staticmethod
     def convert_format(input_path: Path, output_format: str = "wav") -> Path:
+        if not PYDUB_AVAILABLE:
+            logger.error("pydub not available - cannot convert audio format")
+            raise RuntimeError("Audio pipeline service not available. Install pydub: pip install pydub")
+        
         output_path = input_path.with_suffix(f".{output_format}")
         audio = AudioSegment.from_file(str(input_path))
         audio.export(str(output_path), format=output_format)
@@ -21,6 +31,10 @@ class AudioPipelineService:
 
     @staticmethod
     def resample(input_path: Path, sample_rate: int | None = None) -> Path:
+        if not PYDUB_AVAILABLE:
+            logger.error("pydub not available - cannot resample audio")
+            raise RuntimeError("Audio pipeline service not available. Install pydub: pip install pydub")
+        
         target_rate = sample_rate or settings.RECORDING_SAMPLE_RATE
         audio = AudioSegment.from_file(str(input_path))
         resampled = audio.set_frame_rate(target_rate)

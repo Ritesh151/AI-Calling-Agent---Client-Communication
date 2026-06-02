@@ -76,6 +76,26 @@ async def _sync_devices_live(db: Session) -> None:
     await device_sync_service.sync(db)
 
 
+@router.post("/cleanup", response_model=SuccessResponse[dict])
+async def cleanup_devices(
+    db: Session = Depends(get_db),
+    _: str = Depends(require_role("admin")),
+) -> SuccessResponse[dict]:
+    """Cleanup stale and duplicate devices."""
+    service = DeviceService(db)
+    
+    stale_result = service.cleanup_stale_devices()
+    dup_result = service.cleanup_duplicate_devices()
+    
+    return SuccessResponse(
+        message="Device cleanup completed",
+        data={
+            **stale_result,
+            **dup_result,
+        },
+    )
+
+
 @router.post("/sync", response_model=SuccessResponse[dict])
 async def sync_devices(
     db: Session = Depends(get_db),
@@ -98,7 +118,7 @@ async def sync_devices(
 async def list_devices(
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=200),
-    sync: bool = Query(True, description="Reconcile with ADB before returning"),
+    sync: bool = Query(False, description="Reconcile with ADB before returning"),  # ✅ Changed to False (was True)
     adb_present_only: bool = Query(
         False,
         description="Only return devices currently visible to ADB as connected",

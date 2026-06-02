@@ -110,10 +110,11 @@ export default function SettingsPage() {
     setValues(initial);
   }, [settingsData]);
 
-  // Save mutation
+  // Save mutation - batch all settings into single request
   const saveMutation = useMutation({
     mutationFn: async (settingsToSave: Record<string, string>) => {
-      const promises = Object.entries(settingsToSave).map(([key, value]) => {
+      // Build batch payload with all settings
+      const batch = Object.entries(settingsToSave).map(([key, value]) => {
         // Find category for this key
         let category = "general";
         for (const cat of settingsCategories) {
@@ -123,17 +124,19 @@ export default function SettingsPage() {
           }
         }
 
-        return settingsService.upsert(key, {
+        return {
           key,
           value,
           category,
           description: settingsCategories
             .flatMap((c) => c.settings)
             .find((s) => s.key === key)?.label || "",
-        });
+        };
       });
 
-      await Promise.all(promises);
+      // Send all settings in single request (new batch endpoint)
+      const response = await settingsService.batchUpsert(batch);
+      return response.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["settings"] });

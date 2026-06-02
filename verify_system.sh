@@ -138,10 +138,12 @@ if command -v adb &> /dev/null; then
             echo -e "${GREEN}✓${NC} $DEVICE_COUNT device(s) connected"
             ((PASSED++))
             adb devices | grep "device$"
+            
         else
             echo -e "${YELLOW}⚠${NC} No devices connected"
             ((WARNINGS++))
         fi
+
     else
         echo -e "${RED}✗${NC} ADB server not running - run: adb start-server"
         ((FAILED++))

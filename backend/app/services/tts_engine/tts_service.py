@@ -13,7 +13,6 @@ from app.services.tts_engine.tts_provider import TTSProvider
 
 logger = logging.getLogger(__name__)
 
-
 class TTSFactory:
     _providers: dict[str, TTSProvider] = {}
     _cache_dir: Path = Path(settings.TTS_CACHE_DIR)

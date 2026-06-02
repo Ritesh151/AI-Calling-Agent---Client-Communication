@@ -23,15 +23,26 @@ def list_settings(
     return SuccessResponse(data=settings)
 
 
-@router.get("/{setting_id}", response_model=SuccessResponse[SettingRead])
-def get_setting(
-    setting_id: int,
+@router.put("/batch", response_model=SuccessResponse[list[SettingRead]])
+async def batch_upsert_settings(
+    request: dict,
     db: Session = Depends(get_db),
     _: int = Depends(get_current_user_id),
-) -> SuccessResponse[SettingRead]:
+) -> SuccessResponse[list[SettingRead]]:
+    """Batch upsert multiple settings in a single request (reduces HTTP calls from 20+ to 1)."""
     service = SettingService(db)
-    setting = service.get_setting(setting_id)
-    return SuccessResponse(data=setting)
+    settings_list = request.get("settings", [])
+    
+    results = []
+    for setting_data in settings_list:
+        key = setting_data.get("key")
+        if not key:
+            continue
+        update_req = SettingUpdate(**setting_data)
+        setting = await service.upsert_setting(key, update_req)
+        results.append(setting)
+    
+    return SuccessResponse(message=f"Batch saved {len(results)} settings", data=results)
 
 
 @router.get("/key/{key}", response_model=SuccessResponse[SettingRead])
@@ -42,6 +53,29 @@ def get_setting_by_key(
 ) -> SuccessResponse[SettingRead]:
     service = SettingService(db)
     setting = service.get_setting_by_key(key)
+    return SuccessResponse(data=setting)
+
+
+@router.put("/key/{key}", response_model=SuccessResponse[SettingRead])
+async def upsert_setting(
+    key: str,
+    request: SettingUpdate,
+    db: Session = Depends(get_db),
+    _: int = Depends(get_current_user_id),
+) -> SuccessResponse[SettingRead]:
+    service = SettingService(db)
+    setting = await service.upsert_setting(key, request)
+    return SuccessResponse(message="Setting saved", data=setting)
+
+
+@router.get("/{setting_id}", response_model=SuccessResponse[SettingRead])
+def get_setting(
+    setting_id: int,
+    db: Session = Depends(get_db),
+    _: int = Depends(get_current_user_id),
+) -> SuccessResponse[SettingRead]:
+    service = SettingService(db)
+    setting = service.get_setting(setting_id)
     return SuccessResponse(data=setting)
 
 
@@ -66,18 +100,6 @@ def update_setting(
     service = SettingService(db)
     setting = service.update_setting(setting_id, request)
     return SuccessResponse(message="Setting updated", data=setting)
-
-
-@router.put("/key/{key}", response_model=SuccessResponse[SettingRead])
-async def upsert_setting(
-    key: str,
-    request: SettingUpdate,
-    db: Session = Depends(get_db),
-    _: int = Depends(get_current_user_id),
-) -> SuccessResponse[SettingRead]:
-    service = SettingService(db)
-    setting = await service.upsert_setting(key, request)
-    return SuccessResponse(message="Setting saved", data=setting)
 
 
 @router.delete("/{setting_id}", response_model=SuccessResponse[None])

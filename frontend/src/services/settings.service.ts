@@ -33,6 +33,11 @@ export const settingsService = {
     return response.data;
   },
 
+  async batchUpsert(settings: Array<Partial<Setting>>): Promise<ApiResponse<Setting[]>> {
+    const response = await apiClient.put<ApiResponse<Setting[]>>("/settings/batch", { settings });
+    return response.data;
+  },
+
   async delete(id: number): Promise<ApiResponse<null>> {
     const response = await apiClient.delete<ApiResponse<null>>(`/settings/${id}/`);
     return response.data;

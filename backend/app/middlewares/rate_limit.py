@@ -8,7 +8,6 @@ from starlette.types import ASGIApp, Message, Receive, Scope, Send
 from app.core.config import settings
 from app.core.exceptions import RateLimitException
 
-
 class RateLimitMiddleware:
     """Pure ASGI rate limiter — skips WebSocket scopes."""
 
@@ -18,6 +17,11 @@ class RateLimitMiddleware:
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
         if scope["type"] != "http" or not settings.RATE_LIMIT_ENABLED:
+            await self.app(scope, receive, send)
+            return
+
+        method = scope.get("method", "")
+        if method == "OPTIONS":
             await self.app(scope, receive, send)
             return
 
@@ -31,25 +35,38 @@ class RateLimitMiddleware:
             t for t in self._rate_limit_store[client_ip] if now - t < window
         ]
 
+
         if len(self._rate_limit_store[client_ip]) >= max_requests:
             exc = RateLimitException(
                 message=f"Rate limit exceeded. Max {max_requests} requests per minute."
             )
-            await self._send_json_error(send, exc.status_code, exc.message)
+            await self._send_json_error(send, exc.status_code, exc.message, scope)
             return
 
         self._rate_limit_store[client_ip].append(now)
         await self.app(scope, receive, send)
 
-    async def _send_json_error(self, send: Send, status: int, message: str) -> None:
+    async def _send_json_error(self, send: Send, status: int, message: str, scope: Scope | None = None) -> None:
         body = (
             f'{{"success":false,"message":"{message}","error_code":"RATE_LIMIT_EXCEEDED"}}'
         ).encode()
+        headers = [
+            [b"content-type", b"application/json"],
+        ]
+        if scope:
+            for h_name, h_value in scope.get("headers", []):
+                if h_name == b"origin":
+                    allowed = settings.CORS_ORIGINS
+                    origin_str = h_value.decode()
+                    if origin_str in allowed:
+                        headers.append([b"access-control-allow-origin", origin_str.encode()])
+                        headers.append([b"access-control-allow-credentials", b"true"])
+                    break
         await send(
             {
                 "type": "http.response.start",
                 "status": status,
-                "headers": [[b"content-type", b"application/json"]],
+                "headers": headers,
             }
         )
         await send({"type": "http.response.body", "body": body})
