@@ -1,30 +1,3 @@
-````md
-<div align="center">
-
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=260&color=0:00F7FF,100:7C3AED&text=AI%20Calling%20System&fontSize=55&fontColor=ffffff&fontAlignY=40&desc=Production%20Grade%20AI%20Call%20Automation%20Platform&descAlignY=62"/>
-
-<img src="https://readme-typing-svg.herokuapp.com?font=Orbitron&weight=700&size=30&duration=2500&pause=1000&color=00F7FF&center=true&vCenter=true&width=900&lines=AI+Powered+Call+Reception+Platform;Android+Automation+System;Realtime+Transcript+Generation;FastAPI+%2B+Next.js+Architecture;Built+For+Production"/>
-
-<br>
-
-<!-- DARK MODE BADGES -->
-
-<p>
-
-<img src="https://img.shields.io/github/stars/Ritesh151/AI-Calling-Agent---Client-Communication?style=for-the-badge&logo=github&logoColor=white"/>
-
-<img src="https://img.shields.io/github/forks/Ritesh151/AI-Calling-Agent---Client-Communication?style=for-the-badge"/>
-
-<img src="https://img.shields.io/github/license/Ritesh151/AI-Calling-Agent---Client-Communication?style=for-the-badge"/>
-
-<img src="https://komarev.com/ghpvc/?username=Ritesh151&style=for-the-badge&color=blueviolet"/>
-
-</p>
-
-</div>
-
----
-
 # ⚡ AI Calling System
 
 <table>
